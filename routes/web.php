@@ -12,3 +12,4 @@
 */
 
 Route::get('/', 'StaffController@index');
+Route::get('/filter', 'StaffController@filter');
