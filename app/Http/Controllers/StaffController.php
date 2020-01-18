@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Staff;
+use App\Department;
 use Illuminate\Http\Request;
 
 class StaffController extends Controller
@@ -14,7 +15,9 @@ class StaffController extends Controller
      */
     public function index()
     {
-        //
+        $data = Staff::with('departments')->paginate(10);
+        $department = Department::all();
+        return view('index', compact('data', 'department'));
     }
 
     /**
