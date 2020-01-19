@@ -26,7 +26,7 @@ This is a searchable staff directory where user can search for their staff easil
 - Open `Command Prompt`
 - Clone Project from github `git clone https://github.com/abhishekH1992/staff_directory.git`
 - Rename `.env.example` file to `.env`
-- Run `composer install`
+- Install dependancies using run `composer install`
 - Run `php artisan key:generate` to generate `app` key
 - Connect to `DB` server. Open `.env` file and make below changes
 ```
@@ -37,7 +37,7 @@ DB_DATABASE= //your db name
 DB_USERNAME= //your db username
 DB_PASSWORD= // your db password
 ```
-- Run migration `php artisan migrate`
+- Run migration `php artisan migrate:refresh`
 - Generate seed. Run `php artisan db:seed`
 - Run `php artisan serve` to `run` project
 
