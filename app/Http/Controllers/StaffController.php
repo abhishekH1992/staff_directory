@@ -20,11 +20,12 @@ class StaffController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(Request $request)
+    public function index(Request $request) //Index file view with filter
     {
         $data = Staff::with('departments')->orderBy('created_at', 'DESC')->paginate(10);
         $department = Department::all();
 
+        //If request is from ajax, then processing to filter data
         if($request->ajax()) {
             $str    =   $request->str;
             $dep    =   $request->dep;//dd($dep);
@@ -68,9 +69,11 @@ class StaffController extends Controller
                 $data = $s::with('departments')->orderBy('created_at', 'DESC')->paginate(10);
             }
 
+            // returning data to view
             return view('search', ['data' => $data])->render();
         }
 
+        //returning data if request is not from ajax
         return view('index', compact('data', 'department'));
     }
 
@@ -79,7 +82,7 @@ class StaffController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create()    //Create new staff view
     {
         $department = Department::all();
         return view('staff.create', compact('department'));
@@ -91,7 +94,7 @@ class StaffController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(Request $request) // storing new staff
     {
         $fname          =   $request->fname;
         $lname          =   $request->lname;
@@ -101,6 +104,7 @@ class StaffController extends Controller
 
         $path           =   null;
 
+        //Validating data
         $validator = Validator::make($request->all(), [
             'fname'         =>  'required',
             'lname'         =>  'required',
@@ -113,8 +117,10 @@ class StaffController extends Controller
             return response(json_encode($mesg));
         }
 
+        //image field is optional. Check image value
         if($image != null){
 
+            //checking if upload folder is available or not. It not creating upload folder
             $directory = public_path('assets/uploads');
             if (!File::isDirectory($directory)) {
                 File::makeDirectory($directory);
@@ -148,7 +154,7 @@ class StaffController extends Controller
      * @param  \App\Staff  $staff
      * @return \Illuminate\Http\Response
      */
-    public function edit(Staff $staff)
+    public function edit(Staff $staff)  //edit staff view
     {
         $data = Staff::find($staff->id);
         $department = Department::all();
@@ -162,7 +168,7 @@ class StaffController extends Controller
      * @param  \App\Staff  $staff
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Staff $staff)
+    public function update(Request $request, Staff $staff)  //update staff
     {
         $fname          =   $request->fname;
         $lname          =   $request->lname;
@@ -229,9 +235,11 @@ class StaffController extends Controller
      * @param  \App\Staff  $staff
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Staff $staff)
+    public function destroy(Staff $staff)   //delete staff
     {
         $file_name = explode('/', $staff->image);
+
+        //getting image server path
         $file_path = public_path('assets/uploads/').end($file_name);//dd($file_path);
         if(File::exists($file_path)) {
             File::delete($file_path);
@@ -245,7 +253,7 @@ class StaffController extends Controller
         return redirect()->back();
     }
 
-    public function upload(Request $request){
+    public function upload(Request $request){   //upload csv
         
         $validator = Validator::make($request->all(), [
             'file' => 'required'
@@ -260,18 +268,22 @@ class StaffController extends Controller
         $file = $request->file('file');
         $csvData = file_get_contents($file);
         $rows = array_map("str_getcsv", explode("\n", $csvData));
+        
+        //CSV headers
         $header = array_shift($rows);
 
         $d = new Department;
 
         $escapedHeader=[];
 
+        //to converting lowercase and remove spaces
         foreach ($header as $key => $value) {
             $lheader=strtolower($value);
             $escapedItem=preg_replace('/[^a-z]/', '', $lheader);
             array_push($escapedHeader, $escapedItem);
         }
 
+        //storing data to database
         foreach($rows as $row) {
             if (count($header) != count($row)) {
                 continue;

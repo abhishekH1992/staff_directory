@@ -11,6 +11,7 @@ function clearError(){
   });
 }
 
+//responsive menu
 function menuResponsive() {
   var x = document.getElementById("myTopnav");
   if (x.className === "topnav") {
@@ -20,6 +21,7 @@ function menuResponsive() {
   }
 }
 
+//Ajax filter request function
 function filter(url){
   var str = $("#search").val();
   var dep = $('#department option:selected').val();
@@ -42,6 +44,7 @@ function filter(url){
     });
 }
 
+//calling filter function
 $(document).ready(function(){
   $("#search").on('input', function(){
       filter('/');
@@ -104,6 +107,7 @@ $(document).on("submit", "#new-staff-form", function(event){
   });
 });
 
+//edit staff
 $(document).on("submit", "#edit-staff-form", function(event){
   var form = $('#edit-staff-form');
   event.preventDefault();
