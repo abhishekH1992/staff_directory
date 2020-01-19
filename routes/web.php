@@ -15,3 +15,5 @@ Route::get('/', 'StaffController@index');
 
 Route::resource('staff', 'StaffController');
 Route::resource('department', 'DepartmentController');
+
+Route::post('/uploadFile', 'StaffController@upload');

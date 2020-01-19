@@ -9,6 +9,7 @@
 
     <div class="container">
         @if(Session::has('message'))
+            <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
             <div class="alert alert-success">
                 {{Session::get('message')}}
             </div>
@@ -19,7 +20,7 @@
                 <div class="row">
                     <div class="col col-xl-9 col-lg-9 col-md-9 col-sm-12 col-12">
                         <div class="form-group">
-                            <input type="text" class="form-control" id="search" placeholder="Start typing staff name.." name="search">
+                            <input type="text" class="form-control" id="search" placeholder="Start typing keywords.." name="search">
                         </div>
                     </div>
                     <div class="col col-xl-3 col-lg-3 col-md-3 col-sm-12 col-12">

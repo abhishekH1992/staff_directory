@@ -244,4 +244,61 @@ class StaffController extends Controller
 
         return redirect()->back();
     }
+
+    public function upload(Request $request){
+        
+        $validator = Validator::make($request->all(), [
+            'file' => 'required'
+        ]);
+
+        if ($validator->fails()) {
+            return redirect()
+                ->back()
+                ->withErrors($validator);
+        }
+
+        $file = $request->file('file');
+        $csvData = file_get_contents($file);
+        $rows = array_map("str_getcsv", explode("\n", $csvData));
+        $header = array_shift($rows);
+
+        $d = new Department;
+
+        $escapedHeader=[];
+
+        foreach ($header as $key => $value) {
+            $lheader=strtolower($value);
+            $escapedItem=preg_replace('/[^a-z]/', '', $lheader);
+            array_push($escapedHeader, $escapedItem);
+        }
+
+        foreach($rows as $row) {
+            if (count($header) != count($row)) {
+                continue;
+            }
+
+            $row = array_combine($escapedHeader, $row);//dd($row);
+
+            $check = Department::where('name', $row['department'])->get();//dd($check);
+
+            if(count($check) == 0){
+                $d = Department::create(['name'=> $row['department']]);
+
+                $d_id = $d->id;
+            } else {
+                $d_id = $check[0]->id;
+            }
+
+            Staff::create([
+                'fname' => $row['firstname'],
+                'lname' => $row['lastname'],
+                'department' => $d_id,
+                'profile' => $row['profile'],
+            ]);
+        }
+
+        Session::flash('message', 'CSV file imported!');
+           
+        return response()->json('success');
+    }
 }

@@ -23,7 +23,6 @@ function menuResponsive() {
 function filter(url){
   var str = $("#search").val();
   var dep = $('#department option:selected').val();
-  // /alert(dep);
   $.ajaxSetup({
         headers: {
           'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -160,6 +159,31 @@ $(document).on("submit", "#new-department-form", function(event){
         if(result["name"]){
             html = validationError(result["name"]);
             $("#nameErr").parent().append(html);
+        }
+      }
+    },
+  });
+});
+
+//csv
+$(document).on("submit", "#new-csv-form", function(event){
+  event.preventDefault();
+  $.ajax({
+    type: "POST",
+    url: '/uploadFile',
+    data: new FormData(this),
+    processData: false,
+    contentType: false,
+    success: function(data){
+      clearError();
+      if(data=='success'){
+        location.href = '/';
+      } else {
+        var result = JSON.parse(data);
+        var html = "";
+        if(result["file"]){
+            html = validationError(result["file"]);
+            $("#fileErr").parent().append(html);
         }
       }
     },
