@@ -23,9 +23,9 @@ This is a searchable staff directory where user can search for their staff easil
 
 ## Project Configuration
 - Download and install composer - [link](https://getcomposer.org/)
+- Open `Command Prompt`
 - Clone Project from github `git clone https://github.com/abhishekH1992/staff_directory.git`
 - Rename `.env.example` file to `.env`
-- Open `Command Prompt`
 - Run `composer install`
 - Run `php artisan key:generate` to generate `app` key
 - Connect to `DB` server. Open `.env` file and make below changes
