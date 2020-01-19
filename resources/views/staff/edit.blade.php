@@ -67,8 +67,8 @@
 	                        </div>
 	                    </div>
 	                    <div class="col col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-	                        <a href="/" class="btn btn-default pagination">Cancel</a>
-	                        <button type="submit" class="btn btn-primary pagination">Edit</button>
+	                        <a href="/" class="btn btn-default float-right ">Cancel</a>
+	                        <button type="submit" class="btn btn-primary float-right right-margin">Edit</button>
 	                    </div>
 	                </div>
 	            </form>

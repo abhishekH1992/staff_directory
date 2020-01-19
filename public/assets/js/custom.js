@@ -23,7 +23,7 @@ function menuResponsive() {
 function filter(url){
   var str = $("#search").val();
   var dep = $('#department option:selected').val();
-  $.ajaxSetup({
+    $.ajaxSetup({
         headers: {
           'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
         }
@@ -66,6 +66,12 @@ $(document).on("submit", "#new-staff-form", function(event){
     data: new FormData(this),
     processData: false,
     contentType: false,
+    beforeSend: function () {
+      $("#wait").css("display", "block");
+    },
+    complete: function () {
+      $("#wait").css("display", "none");
+    },
     success: function(data){
       clearError();
       if(data=='success'){
@@ -107,6 +113,12 @@ $(document).on("submit", "#edit-staff-form", function(event){
     data: new FormData(this),
     processData: false,
     contentType: false,
+    beforeSend: function () {
+      $("#wait").css("display", "block");
+    },
+    complete: function () {
+      $("#wait").css("display", "none");
+    },
     success: function(data){
       clearError();
       if(data=='success'){
@@ -149,6 +161,12 @@ $(document).on("submit", "#new-department-form", function(event){
     data: new FormData(this),
     processData: false,
     contentType: false,
+    beforeSend: function () {
+      $("#wait").css("display", "block");
+    },
+    complete: function () {
+      $("#wait").css("display", "none");
+    },
     success: function(data){
       clearError();
       if(data=='success'){
@@ -174,6 +192,12 @@ $(document).on("submit", "#new-csv-form", function(event){
     data: new FormData(this),
     processData: false,
     contentType: false,
+    beforeSend: function () {
+      $("#wait").css("display", "block");
+    },
+    complete: function () {
+      $("#wait").css("display", "none");
+    },
     success: function(data){
       clearError();
       if(data=='success'){

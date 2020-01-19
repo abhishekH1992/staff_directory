@@ -22,7 +22,7 @@
     <script src="{{url('/')}}/assets/js/custom.js"></script>
 
 </head>
-
+<div id="wait" style="background-size: 200px;"></div>
 @yield('content')
 
 </html>

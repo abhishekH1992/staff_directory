@@ -8,9 +8,13 @@
                 <div class="row">
                     <div class="col col-lg-2 col-md-2 col-sm-12 col-12">
                         @if($d->image != null)
+                        <div class="img-center" style="width:100%; height:100%">
                             <img src="{{$d->image}}" height="150" width="150">
+                        </div>
                         @else
+                        <div class="img-center" style="width:100%; height:100%">
                             <img src="assets/img/profile-image.jpg" height="150" width="150">
+                        </div>
                         @endif
                     </div>
                     <div class="col col-lg-10 col-md-10 col-sm-12 col-12">
