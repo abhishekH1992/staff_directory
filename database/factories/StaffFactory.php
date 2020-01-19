@@ -9,7 +9,7 @@ $factory->define(Staff::class, function (Faker $faker) {
     return [
         'fname' 		=>	$faker->word,
         'lname'			=>	$faker->word,
-        'department'	=>	$faker->numberBetween(1, 10),
+        'department'	=>	$faker->numberBetween(1, App\Department::count()),
         'profile'		=>	$faker->paragraphs(1, true),
     ];
 });

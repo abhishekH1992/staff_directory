@@ -38,7 +38,7 @@
 
         <div id="filter">
             <?php
-                $count = count($data);//dd($data[0]->fname);
+                $count = count($data);//dd($data);
             ?>
             @if($count > 0)
                 @foreach($data as $d)
@@ -51,18 +51,6 @@
                                     @else
                                         <img src="assets/img/profile-image.jpg" height="150" width="150">
                                     @endif
-                                    <span>
-                                        <a href="{{ route('staff.edit',$d->id)}}" class="btn btn-warning">
-                                            <i class="fas fa-edit"></i>
-                                        </a>
-                                        <form action="{{ route('staff.destroy', $d->id)}}" method="post">
-                                            @csrf
-                                            @method('DELETE')
-                                            <button class="btn btn-danger" type="submit">
-                                                <i class="fa fa-trash" aria-hidden="true"></i>
-                                            </button>
-                                        </form>
-                                    </span>
                                 </div>
                                 <div class="col col-lg-10 col-md-10 col-sm-12 col-12">
                                     <div class="heading">
@@ -74,6 +62,25 @@
                                     <p class="tp-margin">
                                         {{$d->profile}}
                                     </p>
+                                </div>
+                                <div class="col col-lg-12 col-md-12 col-sm-12 col-12">
+                                    <hr/>
+                                    <form action="{{ route('staff.destroy', $d->id)}}" method="post" class="float-right">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button class="btn btn-danger" type="submit">
+                                            <i class="fa fa-trash" aria-hidden="true"></i>
+                                        </button>
+                                    </form>
+                                    <a href="{{ route('staff.edit',$d->id)}}" class="btn btn-warning float-right right-margin">
+                                        <i class="fas fa-edit"></i>
+                                    </a>
+                                    <span class="small">
+                                        Created on: {{date('d,M Y', strtotime($d->created_at))}} 
+                                        @if($d->created_at != $d->updated_at)
+                                            | Updated on: {{date('d,M Y', strtotime($d->updated_at))}}
+                                        @endif
+                                    </span>
                                 </div>
                             </div>
                         </div>

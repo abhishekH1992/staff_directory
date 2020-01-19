@@ -68,3 +68,55 @@ a:hover{
     display: block;
     height: 50px;
 }
+
+.ui-block{
+  background-color: #fff;
+    border-radius: 5px;
+    border: 1px solid #e6ecf5;
+    margin-bottom: 15px;
+}
+
+.ui-block-title:first-child {
+    border-top: none;
+}
+
+.ui-block-title {
+    padding: 23px 25px 18px;
+    line-height: 1;
+    border-bottom: 1px solid #e6ecf5;
+    border-top: 1px solid #e6ecf5;
+    display: table;
+    width: 100%;
+    position: relative;
+    border-radius: 5px 5px 0 0;
+}
+
+.ui-block-content {
+    padding: 24px 23px 23px;
+}
+
+.heading{
+  font-size: 20px;
+  font-weight: 500;
+  line-height: 1.2;
+}
+
+.tp-margin{
+  margin-top: 10px;
+}
+
+.small{
+  font-size: 14px;
+}
+
+.pagination{
+  float: right;
+}
+
+.parsley-errors-list{
+  font-size: 12px;
+}
+
+.right-margin{
+  margin-right: 10px;
+}

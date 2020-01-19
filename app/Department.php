@@ -11,6 +11,6 @@ class Department extends Model
   	protected $fillable = ['name', 'updated_at'];
 
   	function staff(){
-  		return $this->hasMany('App\Staff', 'department');
+  		return $this->hasMany(Staff::class, 'department');
   	}
 }

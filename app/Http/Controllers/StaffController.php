@@ -22,7 +22,7 @@ class StaffController extends Controller
      */
     public function index()
     {
-        $data = Staff::with('departments')->paginate(10);
+        $data = Staff::with('departments')->paginate(50);
         $department = Department::all();
         return view('index', compact('data', 'department'));
     }
@@ -103,7 +103,7 @@ class StaffController extends Controller
      */
     public function edit(Staff $staff)
     {
-        $data = Staff::find($staff);
+        $data = Staff::find($staff->id);
         $department = Department::all();
         return view('staff.edit', compact('data', 'department'));
     }

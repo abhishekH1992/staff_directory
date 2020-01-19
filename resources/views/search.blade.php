@@ -8,9 +8,9 @@
                 <div class="row">
                     <div class="col col-lg-2 col-md-2 col-sm-12 col-12">
                         @if($d->image != null)
-                            <img src="{{$d->image}}" height="150">
+                            <img src="{{$d->image}}" height="150" width="150">
                         @else
-                            <img src="assets/img/profile-image.jpg" height="150">
+                            <img src="assets/img/profile-image.jpg" height="150" width="150">
                         @endif
                     </div>
                     <div class="col col-lg-10 col-md-10 col-sm-12 col-12">
@@ -23,6 +23,25 @@
                         <p class="tp-margin">
                             {{$d->profile}}
                         </p>
+                    </div>
+                    <div class="col col-lg-12 col-md-12 col-sm-12 col-12">
+                        <hr/>
+                        <form action="{{ route('staff.destroy', $d->id)}}" method="post" class="float-right">
+                            @csrf
+                            @method('DELETE')
+                            <button class="btn btn-danger" type="submit">
+                                <i class="fa fa-trash" aria-hidden="true"></i>
+                            </button>
+                        </form>
+                        <a href="{{ route('staff.edit',$d->id)}}" class="btn btn-warning float-right right-margin">
+                            <i class="fas fa-edit"></i>
+                        </a>
+                        <span class="small">
+                            Created on: {{date('d,M Y', strtotime($d->created_at))}} 
+                            @if($d->created_at != $d->updated_at)
+                                | Updated on: {{date('d,M Y', strtotime($d->updated_at))}}
+                            @endif
+                        </span>
                     </div>
                 </div>
             </div>
