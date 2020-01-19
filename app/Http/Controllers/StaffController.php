@@ -20,10 +20,57 @@ class StaffController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $data = Staff::with('departments')->paginate(50);
+        $data = Staff::with('departments')->orderBy('created_at', 'DESC')->paginate(10);
         $department = Department::all();
+
+        if($request->ajax()) {
+            $str    =   $request->str;
+            $dep    =   $request->dep;//dd($dep);
+
+            $s  =   new Staff;
+            $d  =   new Department;
+            
+            if($str != null && $dep != 0){ //If input and dropdown values are available
+                $data = $s::with('departments')
+                        ->where('department', $dep)
+                        ->where(function($q) use ($str) {
+                            $q->where('fname', 'like', '%'.$str.'%')
+                            ->orWhere('lname', 'like', '%'.$str.'%')
+                            ->orWhere('profile', 'like', '%'.$str.'%');
+                        })
+                        ->orderBy('created_at', 'DESC')
+                        ->paginate(10);
+
+                
+            } else if($str != null && $dep == 0){ //If input value is set and dropdown value set to all departments
+                $data = $s::with('departments')
+                            ->where(function($q) use ($str) {
+                                $q->where('fname', 'like', '%'.$str.'%')
+                                ->orWhere('lname', 'like', '%'.$str.'%')
+                                ->orWhere('profile', 'like', '%'.$str.'%');
+                            })
+                            ->orderBy('created_at', 'DESC')
+                            ->paginate(10);
+
+                $data_count = count($data);
+
+                return view('search', compact('data', 'data_count'));
+
+            } else if($str == null && $dep != 0){ //If dropdown value is not null and input is null
+                $data = $s::with('departments')
+                            ->where('department', $dep)
+                            ->orderBy('created_at', 'DESC')
+                            ->paginate(10);
+
+            } else if($str == null && $dep == 0){ //If dropdown value is null and input is null
+                $data = $s::with('departments')->orderBy('created_at', 'DESC')->paginate(10);
+            }
+
+            return view('search', ['data' => $data])->render();
+        }
+
         return view('index', compact('data', 'department'));
     }
 
@@ -196,62 +243,5 @@ class StaffController extends Controller
         Session::flash('message', 'Staff deleted!');
 
         return redirect()->back();
-    }
-
-    public function filter(Request $request){
-        $str    =   $request->str;
-        $dep    =   $request->dep;//dd($dep);
-
-        $s  =   new Staff;
-        $d  =   new Department;
-
-        //If input and dropdown values are available
-        if($str != null && $dep != 0){
-            $data = $s::with('departments')
-                        ->where('department', $dep)
-                        ->where(function($q) use ($str) {
-                            $q->where('fname', 'like', '%'.$str.'%')
-                            ->orWhere('lname', 'like', '%'.$str.'%')
-                            ->orWhere('profile', 'like', '%'.$str.'%');
-                        })
-                        ->paginate(10)
-                        ->appends(['dep'=> $dep, 'str'=> $str]);
-
-            $data_count = count($data);
-
-            return view('search', compact('data', 'data_count'));
-
-        } else if($str != null && $dep == 0){ //If input value is set and dropdown value set to all departments
-            $data = $s::with('departments')
-                        ->where(function($q) use ($str) {
-                            $q->where('fname', 'like', '%'.$str.'%')
-                            ->orWhere('lname', 'like', '%'.$str.'%')
-                            ->orWhere('profile', 'like', '%'.$str.'%');
-                        })
-                        ->paginate(10)
-                        ->appends(['dep'=> $dep, 'str'=> $str]);
-
-            $data_count = count($data);
-
-            return view('search', compact('data', 'data_count'));
-
-        } else if($str == null && $dep != 0){ //If dropdown value is not null and input is null
-            $data = $s::with('departments')
-                        ->where('department', $dep)
-                        ->paginate(2)
-                        ->setPath(url('/'))
-                        ->appends(['dep'=> $dep, 'str'=> $str]);//dd($data);
-
-            $data_count = count($data);
-
-            return view('search', compact('data', 'data_count'));
-
-        } else if($str == null && $dep == 0){ //If dropdown value is null and input is null
-            $data = $s::with('departments')->paginate(10)->appends(['dep'=> $dep, 'str'=> $str]);
-
-            $data_count = count($data);
-
-            return view('search', compact('data', 'data_count'));
-        }
     }
 }

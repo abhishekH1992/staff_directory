@@ -59,5 +59,5 @@
     </div>
 @endif
 <div class="pagination"> 
-    {!! $data->appends(Request::except('page'))->render() !!}
+    {{ $data->links() }}
 </div>

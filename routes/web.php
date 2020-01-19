@@ -12,7 +12,6 @@
 */
 
 Route::get('/', 'StaffController@index');
-Route::get('/filter', 'StaffController@filter');
 
 Route::resource('staff', 'StaffController');
 Route::resource('department', 'DepartmentController');

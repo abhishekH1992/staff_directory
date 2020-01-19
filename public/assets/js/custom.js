@@ -20,7 +20,7 @@ function menuResponsive() {
   }
 }
 
-function filter(){
+function filter(url){
   var str = $("#search").val();
   var dep = $('#department option:selected').val();
   // /alert(dep);
@@ -31,10 +31,10 @@ function filter(){
     });
     $.ajax({
         type: "GET",
-        url: '/filter',
+        url: url,
         data: {
-        str: str,
-        dep: dep,
+          str: str,
+          dep: dep,
         },
         success: function(data){
           console.log(data);
@@ -45,10 +45,16 @@ function filter(){
 
 $(document).ready(function(){
   $("#search").on('input', function(){
-      filter();
+      filter('/');
     });
     $("#department").change(function () {
-      filter();
+      filter('/');
+    });
+    $('body').on('click', '.pagination a', function(event) {
+      event.preventDefault();
+      var url = $(this).attr('href');  //alert(url);
+      filter(url);
+      window.history.pushState("", "", url);
     });
 });
 
