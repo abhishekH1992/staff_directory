@@ -6,7 +6,7 @@
 - [References](#references)
 
 ## About
-This is a searchable staff directory where user can search for their staff easily across various departments and can modify their inforamtion. Also, user can import staff's data using `csv` file. 
+This is a searchable staff directory where user can search for their staff easily across various departments and can modify their inforamtion. Also, user can import staff's data using `csv` file (For testing purpose test.csv file is present in project). 
 
 ## Technology
 ```
