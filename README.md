@@ -38,7 +38,7 @@ DB_USERNAME= //your db username
 DB_PASSWORD= // your db password
 ```
 - Run migration `php artisan migrate`
-- Generate seeder `php artisan db:seed`
+- Generate seed. Run `php artisan db:seed`
 - Run `php artisan serve` to `run` project
 
 ## References
