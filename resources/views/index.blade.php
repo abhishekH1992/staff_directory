@@ -87,7 +87,7 @@
                         <div class="col col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
                             <div class="form-group">
                                 <label class="control-label">File</label>
-                                <input class="form-control" name="file" type="file">
+                                <input class="form-control" name="file" type="file" accept=".csv, text/csv">
                                 <span id="fileErr"></span>
                             </div>
                         </div>
