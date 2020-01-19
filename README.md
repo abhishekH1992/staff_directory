@@ -33,9 +33,9 @@ This is a searchable staff directory where user can search for their staff easil
 DB_CONNECTION=mysql
 DB_HOST=127.0.0.1
 DB_PORT=3306
-DB_DATABASE= //your db name
-DB_USERNAME= //your db username
-DB_PASSWORD= // your db password
+DB_DATABASE= //your database name
+DB_USERNAME= //your database username
+DB_PASSWORD= // your database password
 ```
 - Run migration `php artisan migrate:refresh`
 - Generate seed. Run `php artisan db:seed`
