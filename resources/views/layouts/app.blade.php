@@ -13,6 +13,7 @@
 
 	<!-- Bootstrap CSS -->
 	<link rel="stylesheet" type="text/css" href="{{url('/')}}/assets/css/bootstrap.min.css"/>
+	<link rel="stylesheet" type="text/css" href="{{url('/')}}/assets/css/fonts.min.css"/>
     <link rel="stylesheet" type="text/css" href="{{url('/')}}/assets/css/custom.css"/>
 
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">

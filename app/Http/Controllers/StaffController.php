@@ -2,9 +2,16 @@
 
 namespace App\Http\Controllers;
 
+use DB;
+use Session;
+use Input;
+use File;
+
 use App\Staff;
-use App\Department;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
+
+use App\Department;
 
 class StaffController extends Controller
 {
@@ -27,7 +34,8 @@ class StaffController extends Controller
      */
     public function create()
     {
-        //
+        $department = Department::all();
+        return view('staff.create', compact('department'));
     }
 
     /**
@@ -38,18 +46,53 @@ class StaffController extends Controller
      */
     public function store(Request $request)
     {
-        //
-    }
+        $fname          =   $request->fname;
+        $lname          =   $request->lname;
+        $department     =   $request->department;
+        $image          =   $request->image;//dd($image);
+        $profile        =   $request->profile;
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Staff  $staff
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Staff $staff)
-    {
-        //
+        $path           =   null;
+
+        $validator = Validator::make($request->all(), [
+            'fname'         =>  'required',
+            'lname'         =>  'required',
+            'department'    =>  'required',
+            'profile'       =>  'required',
+        ]);
+
+        if($validator->fails()) {
+            $mesg = $validator->messages();
+            return response(json_encode($mesg));
+        }
+
+        if($image != null){
+
+            $directory = public_path('assets/uploads');
+            if (!File::isDirectory($directory)) {
+                File::makeDirectory($directory);
+            }
+            $imageName = time().'.'.$image->getClientOriginalExtension();
+            $image->move($directory, $imageName);
+
+            $path = url('/').'/assets/uploads/'.$imageName;
+        }
+
+        $data = [
+            'fname'         =>  $fname,
+            'lname'         =>  $lname,
+            'department'    =>  $department,
+            'image'         =>  $path,
+            'profile'       =>  $profile
+        ];
+
+        $s = new Staff;
+        $s->fill($data);
+        $s->save();
+
+        Session::flash('message', 'New staff added!');
+
+        return response()->json('success');
     }
 
     /**
@@ -60,7 +103,9 @@ class StaffController extends Controller
      */
     public function edit(Staff $staff)
     {
-        //
+        $data = Staff::find($staff);
+        $department = Department::all();
+        return view('staff.edit', compact('data', 'department'));
     }
 
     /**
@@ -72,7 +117,63 @@ class StaffController extends Controller
      */
     public function update(Request $request, Staff $staff)
     {
-        //
+        $fname          =   $request->fname;
+        $lname          =   $request->lname;
+        $department     =   $request->department;
+        $image          =   $request->image;//dd($image);
+        $profile        =   $request->profile;//dd($staff->id);
+
+        $s = new Staff;
+
+        $validator = Validator::make($request->all(), [
+            'fname'         =>  'required',
+            'lname'         =>  'required',
+            'department'    =>  'required',
+            'profile'       =>  'required',
+        ]);
+
+        if($validator->fails()) {
+            $mesg = $validator->messages();
+            return response(json_encode($mesg));
+        }
+
+        if($image != null){
+            $file_name = explode('/', $staff->image);
+            $file_path = public_path('assets/uploads/').end($file_name);//dd($file_path);
+            if(File::exists($file_path)) {
+                File::delete($file_path);
+            }
+
+            $directory = public_path('assets/uploads');
+            if (!File::isDirectory($directory)) {
+                File::makeDirectory($directory);
+            }
+            $imageName = time().'.'.$image->getClientOriginalExtension();
+            $image->move($directory, $imageName);
+
+            $path = url('/').'/assets/uploads/'.$imageName;
+
+            $data = [
+                'fname'         =>  $fname,
+                'lname'         =>  $lname,
+                'department'    =>  $department,
+                'image'         =>  $path,
+                'profile'       =>  $profile
+            ];
+        } else {
+            $data = [
+                'fname'         =>  $fname,
+                'lname'         =>  $lname,
+                'department'    =>  $department,
+                'profile'       =>  $profile
+            ];
+        }
+
+        $s->where('id', $staff->id)->update($data);
+
+        Session::flash('message', 'Staff updated!');
+
+        return response()->json('success');
     }
 
     /**
@@ -83,7 +184,18 @@ class StaffController extends Controller
      */
     public function destroy(Staff $staff)
     {
-        //
+        $file_name = explode('/', $staff->image);
+        $file_path = public_path('assets/uploads/').end($file_name);//dd($file_path);
+        if(File::exists($file_path)) {
+            File::delete($file_path);
+        }
+
+        $data = Staff::find($staff->id);
+        $data->delete();
+
+        Session::flash('message', 'Staff deleted!');
+
+        return redirect()->back();
     }
 
     public function filter(Request $request){
